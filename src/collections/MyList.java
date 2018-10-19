@@ -120,9 +120,7 @@ public class MyList<E> implements List<E> {
 					break;
 				}
 			}
-		} else {
-			throw new IllegalArgumentException();
-		}
+		} 
 		return index;
 	}
 
@@ -165,9 +163,8 @@ public class MyList<E> implements List<E> {
 					break;
 				}
 			}
-		} else {
-			throw new IllegalArgumentException();
-		}
+		} 
+		
 		return index;
 	}
 
@@ -178,7 +175,9 @@ public class MyList<E> implements List<E> {
 			
 			@Override
 			public void add(E e) {
-		
+				
+				MyList.this.add(e);
+				
 			}
 
 			@Override	
@@ -211,7 +210,8 @@ public class MyList<E> implements List<E> {
 
 			@Override
 			public E previous() {
-				return array[index--];
+				return array[--index];
+				
 			}
 
 			@Override
@@ -228,22 +228,86 @@ public class MyList<E> implements List<E> {
 
 			@Override
 			public void remove() {
-				// TODO Auto-generated method stub
-				
+				MyList.this.remove(get(index));
 			}
 
 			@Override
 			public void set(E e) {
-				
+				MyList.this.set(index, e);
 			}
 		};
 		return li;
 	}
 
 	@Override
-	public ListIterator<E> listIterator(int index) {
-		// TODO Auto-generated method stub
-		return null;
+	public ListIterator<E> listIterator(int fromIndex) {
+		ListIterator<E> li = new ListIterator<E>() {
+			int index = fromIndex;
+			
+			@Override
+			public void add(E e) {
+				
+				MyList.this.add(e);
+				
+			}
+
+			@Override	
+			public boolean hasNext() {
+				return index < array.length;
+			}
+
+			@Override
+			public boolean hasPrevious() {
+				return index > 0;
+			}
+
+			@Override
+			public E next() {
+				return array[index++];
+				
+			}
+
+			@Override
+			public int nextIndex() {
+				int next = 0;
+				if(!hasNext()) {
+					next = array.length;
+				}
+				else if(hasNext()) {
+					next = index + 1;
+				}
+				return next;
+			}
+
+			@Override
+			public E previous() {
+				return array[--index];
+				
+			}
+
+			@Override
+			public int previousIndex() {
+				int previous = 0;
+				if(!hasPrevious()) {
+					previous = -1;
+				}
+				else if(hasPrevious()) {
+					previous = index - 1;
+				}
+				return previous;
+			}
+
+			@Override
+			public void remove() {
+				MyList.this.remove(get(index));
+			}
+
+			@Override
+			public void set(E e) {
+				MyList.this.set(index, e);
+			}
+		};
+		return li;
 	}
 
 	
